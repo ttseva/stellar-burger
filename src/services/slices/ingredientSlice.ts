@@ -1,3 +1,7 @@
+/**
+ * данные всех полученных ингредиентов
+ */
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { TIngredient } from '@utils-types';
 import { getIngredientsApi } from '../../utils/burger-api';
@@ -35,6 +39,7 @@ export const ingredientsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // загрузка ингредиентов
       .addCase(ingredientsThunk.pending, (state) => {
         state.loading = true;
         state.error = null;

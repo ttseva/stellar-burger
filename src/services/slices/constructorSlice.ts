@@ -1,3 +1,7 @@
+/**
+ * данные конструктора бургера
+ */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TConstructorIngredient } from '@utils-types';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +20,10 @@ export const constructorSlice = createSlice({
   name: 'constructorBurger',
   initialState,
   reducers: {
+    /**
+     * Добавление в конструктор
+     * Для булки — замена текущей, для ингредиентов — добавление в массив
+     */
     addItems: {
       reducer: (state, action: PayloadAction<TConstructorIngredient>) => {
         if (action.payload.type === 'bun') {
@@ -28,6 +36,9 @@ export const constructorSlice = createSlice({
         payload: { ...ingredient, id: uuidv4() }
       })
     },
+    /**
+     * Удаление ингредиента по _id из массива ингредиентов
+     */
     removeItems: (state, action) => {
       if (action.payload.type !== 'bun') {
         const idIngridient = action.payload._id;
@@ -41,6 +52,9 @@ export const constructorSlice = createSlice({
       state.bun = null;
       state.ingredients = [];
     },
+    /**
+     * Перемещение ингредиента в массиве вверх или вниз
+     */
     moveItems: (
       state,
       action: PayloadAction<{ index: number; direction: 'up' | 'down' }>

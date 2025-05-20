@@ -1,3 +1,7 @@
+/**
+ * данные профиля пользователя
+ */
+
 import {
   createSlice,
   createAsyncThunk,
@@ -45,15 +49,21 @@ const initialState: TUserState = {
   error: null
 };
 
+/**
+ * Проверка авторизации пользователя
+ */
 export const checkUserAuth = createAsyncThunk(
   `${sliceName}/checkUserAuth`,
   async (_, { dispatch }) => {
+    // Проверка наличия accessToken в cookie
     if (getCookie('accessToken')) {
       getUserApi()
         .then((response) => {
+          // Сохранение пользователя в store
           dispatch(checkUser(response.user));
         })
         .finally(() => {
+          // Проверка авторизации завершена
           dispatch(authCheck());
         });
     } else {
@@ -62,10 +72,15 @@ export const checkUserAuth = createAsyncThunk(
   }
 );
 
+/**
+ * Регистрация
+ */
 export const registerUser = createAsyncThunk<UserDto, TRegisterData>(
   `${sliceName}/registerUser`,
   async (dataUser, { rejectWithValue }) => {
+    // Отправка данных пользователя на сервер для регистрации
     const data = await registerUserApi(dataUser);
+    // Если регистрация неуспешна - ошибка
     if (!data?.success) {
       return rejectWithValue(data);
     }
@@ -76,10 +91,15 @@ export const registerUser = createAsyncThunk<UserDto, TRegisterData>(
   }
 );
 
+/**
+ * Вход
+ */
 export const loginUser = createAsyncThunk<UserDto, TLoginData>(
   `${sliceName}/loginUser`,
   async (dataUser, { rejectWithValue }) => {
+    // Отправка данных пользователя на сервер для входа
     const data = await loginUserApi(dataUser);
+    // Если вход неуспешен - ошибка
     if (!data?.success) {
       return rejectWithValue(data);
     }
@@ -89,20 +109,30 @@ export const loginUser = createAsyncThunk<UserDto, TLoginData>(
   }
 );
 
+/**
+ * Обновление данных
+ */
 export const updateUser = createAsyncThunk<UserDto, Partial<UserDto>>(
   `${sliceName}/updateUser`,
   async (userData) => {
+    // Отправка обновлённых данных пользователя на сервер
     const data = await updateUserApi(userData);
     return data.user;
   }
 );
 
+/**
+ * Выход
+ */
 export const logoutUser = createAsyncThunk<void, void>(
   `${sliceName}/logoutUser`,
   async (_, { dispatch }) => {
+    // Запрос на сервер для выхода пользователя
     await logoutApi().then(() => {
+      // Удалние  accessToken и refreshToken
       deleteCookie('accessToken');
       localStorage.removeItem('refreshToken');
+      // Вызов экшена выхода пользователя
       dispatch(logout());
     });
   }
@@ -112,46 +142,57 @@ export const userSlice = createSlice({
   name: sliceName,
   initialState,
   reducers: {
+    /** Авторизация подтверждена */
     authCheck: (state) => {
       state.isAuth = true;
     },
+    /** Выход  */
     logout: (state) => {
       state.isAuth = false;
     },
+    /** Установка данных пользователя */
     checkUser: (state, action) => {
       state.data = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder
+      /** Проверка авторизации */
       .addCase(checkUserAuth.fulfilled, (state) => {
         state.statusRequest = StatusRequest.Success;
       })
+      /** Регистрация  */
       .addCase(registerUser.fulfilled, (state, action) => {
         state.data = action.payload;
         state.statusRequest = StatusRequest.Success;
       })
+      /** Вход */
       .addCase(loginUser.fulfilled, (state, action) => {
         state.data = action.payload;
         state.statusRequest = StatusRequest.Success;
       })
+      /** Выход */
       .addCase(logoutUser.fulfilled, (state) => {
         state.isAuth = false;
         state.data = null;
         state.statusRequest = StatusRequest.Success;
       })
+      /** Обновление данных */
       .addCase(updateUser.fulfilled, (state, action) => {
         state.data = action.payload;
         state.statusRequest = StatusRequest.Success;
       })
+      /** Ошибка обновления данных  */
       .addCase(updateUser.rejected, (state, action) => {
         state.statusRequest = StatusRequest.Failed;
         state.error =
           action.error.message || 'Ошибка обновления данных пользователя';
       })
+      /** Любой pending экшен */
       .addMatcher(isPending, (state) => {
         state.statusRequest = StatusRequest.Loading;
       })
+      /** Любой rejected экшен */
       .addMatcher(isRejected, (state) => {
         state.statusRequest = StatusRequest.Failed;
       });

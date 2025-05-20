@@ -5,8 +5,8 @@ import { registerUser } from '../../services/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const Register: FC = () => {
-  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,12 +14,11 @@ export const Register: FC = () => {
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const resultAction = await dispatch(
-      registerUser({ name: userName, email, password })
+      registerUser({ email, name: userName, password })
     );
     if (registerUser.fulfilled.match(resultAction)) {
-      navigate('/login'); // или куда нужно
+      navigate('/login');
     }
-    // Можно добавить обработку ошибок, если нужно
   };
 
   return (

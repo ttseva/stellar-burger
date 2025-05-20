@@ -1,3 +1,7 @@
+/**
+ * данные создания заказа
+ */
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import {
   getFeedsApi,
@@ -24,16 +28,25 @@ const initialState: OrdersState = {
   loading: false
 };
 
+/**
+ * Получение ленты заказов
+ */
 export const feedThunk = createAsyncThunk('feed/feedThunk', async () => {
   const data = await getFeedsApi();
   return data;
 });
 
+/**
+ * Получение всех заказов
+ */
 export const ordersThunk = createAsyncThunk('orders/orders', async () => {
   const orders = await getOrdersApi();
   return orders;
 });
 
+/**
+ * Получение заказа по номеру
+ */
 export const orderNumberThunk = createAsyncThunk(
   'orders/orderNumber',
   async (number: number) => {
@@ -42,6 +55,9 @@ export const orderNumberThunk = createAsyncThunk(
   }
 );
 
+/**
+ * Создание нового заказа
+ */
 export const orderBurgerThunk = createAsyncThunk(
   'orders/orderBurger',
   async (data: string[]) => {
@@ -61,6 +77,7 @@ export const ordersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      /** Лента заказов */
       .addCase(feedThunk.pending, (state) => {
         state.error = null;
         state.loading = true;
@@ -75,6 +92,7 @@ export const ordersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message ?? null;
       })
+      /** Все заказы */
       .addCase(ordersThunk.pending, (state) => {
         state.orderRequest = true;
         state.loading = true;
@@ -90,6 +108,7 @@ export const ordersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message ?? null;
       })
+      /** Заказ по номеру */
       .addCase(orderNumberThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -103,6 +122,7 @@ export const ordersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message ?? null;
       })
+      /** Создание заказа */
       .addCase(orderBurgerThunk.pending, (state) => {
         state.orderRequest = true;
         state.loading = true;
