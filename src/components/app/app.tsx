@@ -9,29 +9,38 @@ import {
   ProfileOrders,
   NotFound404
 } from '@pages';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Modal, OrderInfo, IngredientDetails, AppHeader } from '@components';
 import '../../index.css';
 import styles from './app.module.css';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { useEffect } from 'react';
+import { checkUserAuth } from '../../services/slices/userSlice';
+import { useDispatch } from '../../services/store';
+import { ingredientsThunk } from '../../services/slices/ingredientSlice';
 
-import { AppHeader } from '@components';
+const App = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const backgroundLocation = location.state?.background;
 
-// Вспомогательная функция для проверки авторизации (пример: по токену)
-const isAuth = Boolean(localStorage.getItem('accessToken'));
+  useEffect(() => {
+    dispatch(checkUserAuth());
+    dispatch(ingredientsThunk());
+  }, [dispatch]);
 
-// Компонент защищённого роута для неавторизованных
-const ProtectedRoute = ({ children }: { children: JSX.Element }) =>
-  !isAuth ? children : <Navigate to='/' replace />;
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
-    <BrowserRouter>
-      <Routes>
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+      <Routes location={backgroundLocation || location}>
         <Route path='/' element={<ConstructorPage />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed' element={<Feed />} />
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Login />
             </ProtectedRoute>
           }
@@ -39,7 +48,7 @@ const App = () => (
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Register />
             </ProtectedRoute>
           }
@@ -47,7 +56,7 @@ const App = () => (
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -55,7 +64,7 @@ const App = () => (
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
             </ProtectedRoute>
           }
@@ -76,10 +85,42 @@ const App = () => (
             </ProtectedRoute>
           }
         />
+
         <Route path='*' element={<NotFound404 />} />
       </Routes>
-    </BrowserRouter>
-  </div>
-);
+
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title={'Детали ингредиента'} onClose={() => navigate(-1)}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal title={'Детали заказа'} onClose={() => navigate(-1)}>
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
+    </div>
+  );
+};
 
 export default App;
