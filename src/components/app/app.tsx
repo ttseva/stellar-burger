@@ -23,7 +23,7 @@ const App = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const backgroundLocation = location.state?.background;
+  const backgroundLocation = location.state?.background; // Для отображения модальных окон поверх страниц
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -89,6 +89,7 @@ const App = () => {
         <Route path='*' element={<NotFound404 />} />
       </Routes>
 
+      {/* Модальные окна поверх страниц, если был переход по backgroundLocation */}
       {backgroundLocation && (
         <Routes>
           <Route
