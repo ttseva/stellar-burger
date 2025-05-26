@@ -1,0 +1,89 @@
+{
+    "success": true,
+    "data":[
+    {
+        "_id": "60d3b41abd1c0a001a3cb232",
+        "name": "Булка Space",
+        "type": "bun",
+        "proteins": 80,
+        "fat": 24,
+        "carbohydrates": 53,
+        "calories": 420,
+        "price": 1255,
+        "image": "https://code.s3.yandex.net/react/force/bun-space.png",
+        "image_mobile": "https://code.s3.yandex.net/react/force/bun-space-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/force/bun-space-large.png",
+        "__v": 0
+    },
+    {
+        "_id": "60d3b41abd1c0a001a3cb23d",
+        "name": "Флюоресцентная булка R2-D3",
+        "type": "bun",
+        "proteins": 44,
+        "fat": 26,
+        "carbohydrates": 85,
+        "calories": 643,
+        "price": 988,
+        "image": "https://code.s3.yandex.net/react/force/bun-02.png",
+        "image_mobile": "https://code.s3.yandex.net/react/force/bun-02-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/force/bun-02-large.png",
+        "__v": 0
+    },
+    {
+        "_id": "60d3b41abd1c0a001a3cb23e",
+        "name": "Мясо бессмертных моллюсков Protostomia",
+        "type": "main",
+        "proteins": 433,
+        "fat": 244,
+        "carbohydrates": 33,
+        "calories": 420,
+        "price": 1337,
+        "image": "https://code.s3.yandex.net/react/force/meat-02.png",
+        "image_mobile": "https://code.s3.yandex.net/react/force/meat-02-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/force/meat-02-large.png",
+        "__v": 0
+    },
+    {
+        "_id": "60d3b41abd1c0a001a3cb240",
+        "name": "Говяжий метеорит (отбивная)",
+        "type": "main",
+        "proteins": 800,
+        "fat": 800,
+        "carbohydrates": 300,
+        "calories": 2674,
+        "price": 3000,
+        "image": "https://code.s3.yandex.net/react/force/meat-04.png",
+        "image_mobile": "https://code.s3.yandex.net/react/force/meat-04-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/force/meat-04-large.png",
+        "__v": 0
+    },
+    {
+        "_id": "60d3b41abd1c0a001a3cb243",
+        "name": "Сыр с шипами",
+        "type": "main",
+        "proteins": 84,
+        "fat": 48,
+        "carbohydrates": 420,
+        "calories": 3379,
+        "price": 424,
+        "image": "https://code.s3.yandex.net/react/force/cheese-01.png",
+        "image_mobile": "https://code.s3.yandex.net/react/force/cheese-01-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/force/cheese-01-large.png",
+        "__v": 0
+    },
+    {
+        "_id": "60d3b41abd1c0a001a3cb247",
+        "name": "Салат традиционный флюоресцентный",
+        "type": "sauce",
+        "proteins": 42,
+        "fat": 24,
+        "carbohydrates": 99,
+        "calories": 642,
+        "price": 440,
+        "image": "https://code.s3.yandex.net/react/force/salad.png",
+        "image_mobile": "https://code.s3.yandex.net/react/force/salad-mobile.png",
+        "image_large": "https://code.s3.yandex.net/react/force/salad-large.png",
+        "__v": 0
+    }
+]
+}
