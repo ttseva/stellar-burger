@@ -1,4 +1,4 @@
-import { deleteCookie, setCookie } from '../../src/utils/cookie';
+import { setCookie } from '../../src/utils/cookie';
 
 const API_URL = Cypress.env('BURGER_API_URL');
 const REFRESH_TOKEN = 'test_refreshToken';
@@ -18,11 +18,17 @@ describe('Конструктор', () => {
 
     cy.visit('/');
     cy.wait('@getUser');
+
+    cy.contains('[data-cy=ingredient]', 'Краторная булка N-200i').as('bun');
+    cy.contains('[data-cy=ingredient]', 'Биокотлета из марсианской Магнолии').as('cutlet');
+    cy.contains('[data-cy=ingredient]', 'Сыр с астероидной плесенью').as('cheese');
+    cy.contains('[data-cy=ingredient]', 'Мини-салат Экзо-Плантаго').as('salad');
+    cy.contains('[data-cy=ingredient]', 'Плоды Фалленианского дерева').as('fruit');
   });
 
   afterEach(() => {
-    deleteCookie('accessToken');
-    localStorage.removeItem('refreshToken');
+    cy.clearLocalStorage();
+    cy.clearCookies();
   });
 
   it('отображение ингредиентов', () => {
@@ -32,9 +38,8 @@ describe('Конструктор', () => {
   it('добавление в конструктор', () => {
     cy.get('[data-cy=constructor-bun-top]').should('not.exist');
     cy.get('[data-cy=constructor-bun-bottom]').should('not.exist');
-    cy.contains('[data-cy=ingredient]', 'Краторная булка N-200i')
-      .find('button')
-      .click();
+    
+    cy.get('@bun').find('button').click();
     cy.get('[data-cy=constructor-bun-top]').should(
       'contain',
       'Краторная булка N-200i (верх)'
@@ -48,9 +53,7 @@ describe('Конструктор', () => {
       'not.contain',
       'Биокотлета из марсианской Магнолии'
     );
-    cy.contains('[data-cy=ingredient]', 'Биокотлета из марсианской Магнолии')
-      .find('button')
-      .click();
+    cy.get('@cutlet').find('button').click();
     cy.get('[data-cy=constructor-ingredients]').should(
       'contain',
       'Биокотлета из марсианской Магнолии'
@@ -58,7 +61,7 @@ describe('Конструктор', () => {
   });
 
   it('модальные окна', () => {
-    cy.get('[data-cy=ingredient]').first().click();
+    cy.get('@bun').click();
     cy.get('[data-cy=modal]').should('be.visible');
     cy.get('[data-cy=ingredient-details-name]').should(
       'contain',
@@ -68,7 +71,7 @@ describe('Конструктор', () => {
     cy.get('[data-cy=modal-close]').click();
     cy.get('[data-cy=modal]').should('not.exist');
 
-    cy.get('[data-cy=ingredient]').first().click();
+    cy.get('@bun').click();
     cy.get('[data-cy=modal]').should('be.visible');
 
     cy.get('[data-cy=modal-overlay]').click({ force: true });
@@ -78,11 +81,11 @@ describe('Конструктор', () => {
   it('создание заказа', () => {
     cy.intercept('POST', `${API_URL}/orders`, { fixture: 'order.json' }).as('createOrder');
 
-    cy.contains('[data-cy=ingredient]', 'Краторная булка N-200i').find('button').click();
-    cy.contains('[data-cy=ingredient]', 'Сыр с астероидной плесенью').find('button').click();
-    cy.contains('[data-cy=ingredient]', 'Биокотлета из марсианской Магнолии').find('button').click();
-    cy.contains('[data-cy=ingredient]', 'Мини-салат Экзо-Плантаго').find('button').click();
-    cy.contains('[data-cy=ingredient]', 'Плоды Фалленианского дерева').find('button').click();
+    cy.get('@bun').find('button').click();
+    cy.get('@cheese').find('button').click();
+    cy.get('@cutlet').find('button').click();
+    cy.get('@salad').find('button').click();
+    cy.get('@fruit').find('button').click();
 
     cy.get('[data-cy=place-order-button]').click();
     cy.wait('@createOrder');
@@ -95,5 +98,12 @@ describe('Конструктор', () => {
 
     cy.get('[data-cy=constructor-bun-top]').should('not.exist');
     cy.get('[data-cy=constructor-bun-bottom]').should('not.exist');
+    cy.get('[data-cy=constructor-ingredients]')
+      .children()
+      .should('have.length', 0);
+    cy.get('[data-cy=constructor-ingredients]').should('not.contain', 'Биокотлета из марсианской Магнолии');
+    cy.get('[data-cy=constructor-ingredients]').should('not.contain', 'Сыр с астероидной плесенью');
+    cy.get('[data-cy=constructor-ingredients]').should('not.contain', 'Мини-салат Экзо-Плантаго');
+    cy.get('[data-cy=constructor-ingredients]').should('not.contain', 'Плоды Фалленианского дерева');
   });
 });

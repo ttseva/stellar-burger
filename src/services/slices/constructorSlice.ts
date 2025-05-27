@@ -41,11 +41,13 @@ export const constructorSlice = createSlice({
      */
     removeItems: (state, action) => {
       if (action.payload.type !== 'bun') {
-        const idIngridient = action.payload._id;
+        const idIngridient = action.payload.id;
         const index = state.ingredients.findIndex(
-          (item) => item._id === idIngridient
+          (item) => item.id === idIngridient
         );
-        state.ingredients.splice(index, 1);
+        if (index !== -1) {
+          state.ingredients.splice(index, 1);
+        }
       }
     },
     clearOrder: (state) => {
