@@ -6,20 +6,20 @@ import {
   orderBurgerThunk
 } from '../orderSlice';
 
-describe('orderSlice reducer', () => {
+describe('Тесты редьюсеров слайса Заказов', () => {
   const testFeed = { orders: [], total: 0, totalToday: 0, success: true };
   const testOrder = {
     _id: '1',
     name: 'Test Order',
     ingredients: [],
     status: 'done',
-    createdAt: '2023-01-01',
-    updatedAt: '2023-01-01',
+    createdAt: '2025-05-01',
+    updatedAt: '2025-05-10',
     number: 1
   };
-  const errorMessage = 'Test error message';
+  const errorMessage = 'Тестовая ошибка!';
 
-  test('feedThunk pending', () => {
+  test('Тест экшна pending Получения ленты заказов', () => {
     expect(
       ordersReducer(initialState, feedThunk.pending('', undefined))
     ).toEqual({
@@ -29,7 +29,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('feedThunk fulfilled', () => {
+  test('Тест экшна fulfilled Получения ленты заказов', () => {
     expect(
       ordersReducer(initialState, feedThunk.fulfilled(testFeed, '', undefined))
     ).toEqual({
@@ -40,7 +40,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('feedThunk rejected', () => {
+  test('Тест экшна rejected Получения ленты заказов', () => {
     expect(
       ordersReducer(initialState, {
         type: feedThunk.rejected.type,
@@ -53,7 +53,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('ordersThunk pending', () => {
+  test('Тест экшна pending Получения всех заказов', () => {
     expect(
       ordersReducer(initialState, ordersThunk.pending('', undefined))
     ).toEqual({
@@ -64,7 +64,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('ordersThunk fulfilled', () => {
+  test('Тест экшна fulfilled Получения всех заказов', () => {
     expect(
       ordersReducer(
         initialState,
@@ -79,7 +79,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('ordersThunk rejected', () => {
+  test('Тест экшна rejected Получения всех заказов', () => {
     expect(
       ordersReducer(initialState, {
         type: ordersThunk.rejected.type,
@@ -92,7 +92,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('orderNumberThunk pending', () => {
+  test('Тест экшна pending Получения заказа по номеру', () => {
     expect(
       ordersReducer(initialState, orderNumberThunk.pending('', 1))
     ).toEqual({
@@ -102,7 +102,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('orderNumberThunk fulfilled', () => {
+  test('Тест экшна fulfilled Получения заказа по номеру', () => {
     expect(
       ordersReducer(
         initialState,
@@ -120,7 +120,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('orderNumberThunk rejected', () => {
+  test('Тест экшна rejected Получения заказа по номеру', () => {
     expect(
       ordersReducer(initialState, {
         type: orderNumberThunk.rejected.type,
@@ -133,7 +133,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('orderBurgerThunk pending', () => {
+  test('Тест экшна pending Создания заказа', () => {
     expect(
       ordersReducer(initialState, orderBurgerThunk.pending('', []))
     ).toEqual({
@@ -144,7 +144,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('orderBurgerThunk fulfilled', () => {
+  test('Тест экшна fulfilled Создания заказа', () => {
     expect(
       ordersReducer(
         initialState,
@@ -163,7 +163,7 @@ describe('orderSlice reducer', () => {
     });
   });
 
-  test('orderBurgerThunk rejected', () => {
+  test('Тест экшна rejected Создания заказа', () => {
     expect(
       ordersReducer(initialState, {
         type: orderBurgerThunk.rejected.type,

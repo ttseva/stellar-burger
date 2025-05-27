@@ -149,6 +149,7 @@ export const userSlice = createSlice({
     /** Выход  */
     logout: (state) => {
       state.isAuth = false;
+      state.data = null;
     },
     /** Установка данных пользователя */
     checkUser: (state, action) => {

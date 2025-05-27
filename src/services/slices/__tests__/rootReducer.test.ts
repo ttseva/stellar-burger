@@ -10,11 +10,11 @@ const expectedInitialState = {
   feed: feedInitialState,
   user: userInitialState,
   orders: ordersInitialState,
-  constructorBurger: constructorInitialState,
+  constructorBurger: constructorInitialState
 };
 
-describe('Инициализация rootReducer', () => {
-  test('Правильная настройка и работа', () => {
+describe('Тест инициализации rootReducer', () => {
+  test('Тест правильной настройки', () => {
     expect(rootReducer(undefined, { type: '@@INIT' })).toEqual(
       expectedInitialState
     );

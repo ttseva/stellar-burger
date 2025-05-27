@@ -1,11 +1,11 @@
 import { feedReducer, initialState } from '../feedSlice';
 import { feedThunk } from '../feedSlice';
 
-describe('feedSlice reducer', () => {
+describe('Тесты редьюсеров слайса Ленты заказов', () => {
   const testFeed = { orders: [], total: 0, totalToday: 0, success: true };
-  const errorMessage = 'Test error message';
+  const errorMessage = 'Тестовая ошибка!';
 
-  test('pending', () => {
+  test('Тест экшна pending Получения ленты заказов', () => {
     expect(feedReducer(initialState, feedThunk.pending('', undefined))).toEqual(
       {
         ...initialState,
@@ -15,7 +15,7 @@ describe('feedSlice reducer', () => {
     );
   });
 
-  test('fulfilled', () => {
+  test('Тест экшна fulfilled Получения ленты заказов', () => {
     expect(
       feedReducer(initialState, feedThunk.fulfilled(testFeed, '', undefined))
     ).toEqual({
@@ -26,7 +26,7 @@ describe('feedSlice reducer', () => {
     });
   });
 
-  test('rejected', () => {
+  test('Тест экшна rejected Получения ленты заказов', () => {
     expect(
       feedReducer(initialState, {
         type: feedThunk.rejected.type,
