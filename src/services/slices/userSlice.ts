@@ -42,7 +42,7 @@ export interface TUserState {
   error?: string | null | undefined;
 }
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   isAuth: false,
   data: null,
   statusRequest: StatusRequest.Idle,

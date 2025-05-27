@@ -20,6 +20,11 @@ describe('Конструктор', () => {
     cy.wait('@getUser');
   });
 
+  afterEach(() => {
+    deleteCookie('accessToken');
+    localStorage.removeItem('refreshToken');
+  });
+
   it('отображение ингредиентов', () => {
     cy.get('[data-cy=ingredient]').should('have.length.greaterThan', 0);
   });
