@@ -11,6 +11,7 @@ import {
 } from '../../utils/burger-api';
 
 import { TOrder } from '@utils-types';
+import { clearOrder } from './constructorSlice';
 
 type OrdersState = {
   orders: TOrder[];
@@ -60,8 +61,9 @@ export const orderNumberThunk = createAsyncThunk(
  */
 export const orderBurgerThunk = createAsyncThunk(
   'orders/orderBurger',
-  async (data: string[]) => {
+  async (data: string[], { dispatch }) => {
     const order = await orderBurgerApi(data);
+    dispatch(clearOrder());
     return order;
   }
 );
